@@ -1,0 +1,24 @@
+services:
+  trt:
+    build: ./dockerfiles
+    privileged: true
+    ipc: host
+    shm_size: '2gb'
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    working_dir: /app
+    network_mode: host
+    volumes:
+      - ./workspace:/app
+
+      - /dev:/dev
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/root/.Xauthority
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
