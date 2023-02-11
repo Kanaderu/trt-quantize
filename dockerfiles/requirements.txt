@@ -1,8 +1,22 @@
-pycuda
 numpy
 opencv-python
+pandas
+pycuda
 ray[default]
 ray[air]
 ray[tune]
 ray[rllib]
 ray[serve]
+
+pycocotools
+
+# torch and torch-tensorrt
+torch==1.13.1
+torchvision==0.14.1
+https://github.com/pytorch/TensorRT/releases/download/v1.3.0/torch_tensorrt-1.3.0-cp38-cp38-linux_x86_64.whl
+
+# tensorflow - no trtv8 support unless we use the image
+
+# extra quantization libraries
+tensorflow-model-optimization
+pytorch-quantization # needs --extra-index-url https://pypi.ngc.nvidia.com
