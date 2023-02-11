@@ -34,7 +34,7 @@ class Calibrator(trt.IInt8MinMaxCalibrator):
 
     def get_batch(self, names):
         print("######################")
-        print(names)
+        print(f"{names}: {len(names)}")
         print("######################")
         batch = self.stream.next_batch()
         if not batch.size:   

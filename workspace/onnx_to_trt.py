@@ -61,7 +61,6 @@ def build_engine_from_onnx(model_name,
             config.flags |= 1 << int(trt.BuilderFlag.FP16)
 
         if t_dtype == trt.DataType.INT8:
-            print('trt.DataType.INT8')
             config.flags |= 1 << int(trt.BuilderFlag.INT8)
             config.flags |= 1 << int(trt.BuilderFlag.FP16)
 
@@ -117,9 +116,9 @@ def main():
                         default=128, help='batch size for training: default 64')
     parser.add_argument('--num-calib-batch', default=6, type=int,
                         help='Number of batches for calibration')
-    parser.add_argument('--calib-img-dir', default='../coco/images/train2017', type=str,
+    parser.add_argument('--calib-img-dir', default='./datasets/coco/images/train2017', type=str,
                         help='Number of batches for calibration')
-    parser.add_argument('--calib-cache', default='./trt/yolov5s_calibration.cache', type=str,
+    parser.add_argument('--calib-cache', default='./calibration.cache', type=str,
                         help='Path of calibration cache')
     parser.add_argument('--calib-method', default='minmax', type=str,
                         help='Calibration method')
@@ -140,14 +139,14 @@ def main():
     if engine is None:
         raise SystemExit('ERROR: failed to build the TensorRT engine!')
 
-    engine_path = args.model.replace('.onnx', '.engine')
-    if args.dtype == "int8" and not args.qat:
-        engine_path = args.model.replace('.onnx', '-int8-{}-{}-{}.trt'.format(args.batch_size, args.num_calib_batch,
-                                                                              args.calib_method))
+    engine_path = args.model.replace('.onnx',
+        f'-int8-{args.batch_size}-{args.num_calib_batch}-{args.calib_method}.engine'
+        if args.dtype == 'int8' and not args.qat else
+        '.engine')
 
     with open(engine_path, 'wb') as f:
-        f.write(engine.serialize())
-    print('Serialized the TensorRT engine to file: %s' % engine_path)
+        f.write(engine)
+    print(f'Serialized the TensorRT engine to file: {engine_path}')
 
 
 if __name__ == '__main__':

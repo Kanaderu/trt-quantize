@@ -1,3 +1,8 @@
 pycuda
 numpy
 opencv-python
+ray[default]
+ray[air]
+ray[tune]
+ray[rllib]
+ray[serve]
